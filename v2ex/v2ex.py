@@ -1,40 +1,60 @@
-#coding=utf-8
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-import urllib2, urllib, re, cookielib
+import urllib2
+import urllib
+import re
+import cookielib
 
-url = 'http://v2ex.com/signin'
-v2ex = urllib2.urlopen(url)
-contents = v2ex.read()
+username = ''
+password = ''
+host = 'v2ex.com'
+login_url = 'http://v2ex.com/signin'
+mission_url = 'http://v2ex.com/mission/daily'
 
-username = 'jz1206'
-password = 'feng1206'
+def login():
+    cj = cookielib.CookieJar()
+    cookie_handler = urllib2.HTTPCookieProcessor(cj)
 
-reg_once = 'value="(.*)" name="once"'
-once = re.compile(reg_once).findall(contents)[0]
+    req = urllib2.Request(url = login_url)
+    opener = urllib2.build_opener(cookie_handler)
+    urllib2.install_opener(opener)
+    contents = opener.open(req).read()
 
-hdr = {'User-Agent' : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.152 Safari/537.36'}
-post_data = {
-	'username' : username,
-	'password' : password,
-	'once' : once,
-	'next' : '/'
-}
+    reg = 'value="(.*)" name="once"'
+    once = re.compile(reg).findall(contents)[0]
 
-cookie = cookielib.CookieJar()
-cookie_handler = urllib2.HTTPCookieProcessor(cookie)
-dt = urllib.urlencode(post_data)
+    post_data = {
+        'u': username,
+        'p': password,
+        'once': once,
+        'next': '/'
+    }
 
-req = urllib2.Request(url, dt, hdr)
-opener = urllib2.build_opener(cookie_handler)
-urllib2.install_opener(opener)
-response = opener.open(req)
-page = response.read()
-
-print(page)
-
-reg_silver = '<a href="/balance" class="balance_area" style="">(.*)<img src="//cdn.v2ex.com/static/img/silver.png" alt="S" align="absmiddle" border="0" style="padding-bottom: 2px;"> (.*) <img src="//cdn.v2ex.com/static/img/bronze.png" alt="B" align="absmiddle" border="0"></a>'
-coin = re.compile(reg_silver).findall(reg_silver)
-for s in coin:
-	print s
+    post_data = urllib.urlencode(post_data)
+    req = urllib2.Request(url = login_url, data = post_data)
+    opener = urllib2.build_opener(cookie_handler)
+    opener.addheaders = [
+        ('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36'),
+        ('Referer', login_url),
+        ('Host', 'v2ex.com')
+    ]
+    resp = opener.open(req)
+    page = resp.read()
+    # print page
+    # print_cookie(cj)
 
 
+def sign():
+    mission = urllib2.urlopen(url = mission_url)
+    print mission.read()
+
+
+def print_cookie(cookie):
+    for item in cookie:
+        print 'Name = ' + item.name
+        print 'Value = ' + item.value
+
+if __name__ == '__main__':
+    login()
+    sign()
