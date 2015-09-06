@@ -9,8 +9,10 @@ import cookielib
 username = ''
 password = ''
 host = 'v2ex.com'
+host_url = 'http://v2ex.com'
 login_url = 'http://v2ex.com/signin'
 mission_url = 'http://v2ex.com/mission/daily'
+user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36'
 
 def login():
     cj = cookielib.CookieJar()
@@ -24,6 +26,8 @@ def login():
     reg = 'value="(.*)" name="once"'
     once = re.compile(reg).findall(contents)[0]
 
+    # print 'once : ' + once
+
     post_data = {
         'u': username,
         'p': password,
@@ -35,7 +39,7 @@ def login():
     req = urllib2.Request(url = login_url, data = post_data)
     opener = urllib2.build_opener(cookie_handler)
     opener.addheaders = [
-        ('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36'),
+        ('User-Agent', user_agent),
         ('Referer', login_url),
         ('Host', 'v2ex.com')
     ]
@@ -47,8 +51,13 @@ def login():
 
 def sign():
     mission = urllib2.urlopen(url = mission_url)
-    print mission.read()
-
+    # print mission.read()
+    reg = 'value="领取 X 铜币" onclick="location.href = \'(.*)\''
+    href = re.compile(reg).findall(mission.read())[0]
+    request = host_url + href;
+    result = urllib2.urlopen(url = request)
+    request.add_header('User-Agent', user_agent)
+    print result.read()
 
 def print_cookie(cookie):
     for item in cookie:
@@ -58,3 +67,4 @@ def print_cookie(cookie):
 if __name__ == '__main__':
     login()
     sign()
+
