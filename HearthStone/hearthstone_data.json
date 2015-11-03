@@ -1,13 +1,13 @@
 {
-  "83": {
-    "id": 83,
-    "name": "Abomination",
-    "mana": 5,
-    "attack": 4,
-    "health": 4,
-    "text": "Taunt. Deathrattle: Deal 2 damage to ALL characters.",
-    "image": "EX1_097",
+  "251": {
+    "id": 251,
+    "name": "Abusive Sergeant",
+    "mana": 1,
+    "attack": 2,
+    "health": 1,
+    "text": "Battlecry: Give a minion +2 Attack this turn.",
+    "image": "CS2_188",
     "type": "Minion",
-    "rarity": "Rare"
+    "rarity": "Common"
   }
 }
