@@ -1,0 +1,13 @@
+{
+  "83": {
+    "id": 83,
+    "name": "Abomination",
+    "mana": 5,
+    "attack": 4,
+    "health": 4,
+    "text": "Taunt. Deathrattle: Deal 2 damage to ALL characters.",
+    "image": "EX1_097",
+    "type": "Minion",
+    "rarity": "Rare"
+  }
+}
