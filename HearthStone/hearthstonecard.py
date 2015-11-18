@@ -6,7 +6,7 @@ import re
 from bs4 import BeautifulSoup
 
 def getJson():
-    f = open('hearthstone_data.json.backup')
+    f = open('hearthstone_data.json')
     line = f.readline()
     json_str = line
     while line:
