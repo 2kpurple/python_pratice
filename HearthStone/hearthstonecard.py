@@ -3,10 +3,13 @@
 import json
 import requests
 import re
+import os
+import sys
 from bs4 import BeautifulSoup
 
-def getJson():
-    f = open('hearthstone_data.json')
+
+def getJson(filename):
+    f = open(filename)
     line = f.readline()
     json_str = line
     while line:
@@ -27,7 +30,7 @@ def handleCard(item):
     name = re.compile('\s*(.*)\s*').findall(card_attr.h2.a.string)[0]
     item['name_zh'] = name
     # print item['id']
-    print name
+    # print name
     # print '-----------'
     # print name
     if not 'class' in card_attr.p.attrs:
@@ -36,7 +39,7 @@ def handleCard(item):
             text_str = re.sub('<[^>]*>|', '', text_str)
             # print type(text_str)
             item['text_zh'] = text_str
-            print text_str
+            # print text_str
             # print type(text_str)
             # print text_str
     # print item
@@ -44,21 +47,22 @@ def handleCard(item):
 
     # print card_attr + "\n"
 
-def jsonWrite(js):
-    print js
+def jsonWrite(filename, js):
+    # print js
     json_str = json.dumps(js)
-    f = open('hearthstone_data_zh.json', 'wb')
+    f = open('zh_' + filename, 'wb')
     json_str = json_str
     # print type(json_str)
     # print json_str
     f.write(json_str)
 
 def main():
-    js = getJson()
+    f = sys.argv[1]
+    js = getJson(f)
     for i in js:
         item = js[i]
         handleCard(item)
-    jsonWrite(js)
+    jsonWrite(f, js)
 
 if __name__ == '__main__':
     main();
