@@ -35,8 +35,12 @@ class Ariticle(BaseModel):
 def create_xlsx():
     workbook = xlsxwriter.Workbook('cbn_all.xlsx')
     worksheet = workbook.add_worksheet()
-    table_head = [u'刊号', u'刊名', u'发行时间', u'封面']
-    bold = workbook.add_format({'bold': 1})
+    table_head = [u'刊号', u'刊名', u'发行时间', u'封面', u'文章名', u'文章概要', u'文章栏目', u'文章发布时间', u'文章链接']
+    # worksheet.set_column('A:M', 10)
+    worksheet.set_column('B:B', 30)
+    worksheet.set_column('E:E', 30)
+    worksheet.set_column('H:H', 15)
+    bold = workbook.add_format({'bold': 1, 'align': 'center'})
     worksheet.write_row('A1', table_head, bold)
 
 
